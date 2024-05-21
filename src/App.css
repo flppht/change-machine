@@ -1,38 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+  background-color: rgb(233, 233, 233);
+}
+
 .App {
-  text-align: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.machineContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.573);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.formContainer #fiveBAM, #twoBAM, #oneBAM, #fiftyPfenig, #twentyPfenig, #tenPfenig {
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding-left: 10px;
+  color:rgba(50, 50, 50, 0.727);
+  font-weight: 400;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.formContainer span {
+  color: rgb(216, 23, 23);
+  font-style: italic;
+  font-size: smaller;
+  margin-left: 5px;
+}
+
+.paymentContainer {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.573);
+  width: 500px;
+}
+
+.paymentHr {
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-width: 1/2px;
+  border-radius: 5px;
+  border-color: rgb(216, 216, 216);
 }
