@@ -69,7 +69,7 @@ const MachineInitForm = ({ onMachineInit }: Props) => {
                     ))}
                   <button
                     type="submit"
-                    className="bg-slate-500 rounded-md p-2 text-white mt-4"
+                    className="bg-slate-500 rounded-md p-2 text-white mt-4 hover:bg-slate-600"
                   >
                     Initialize machine
                   </button>

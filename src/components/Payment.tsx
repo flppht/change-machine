@@ -32,7 +32,7 @@ const Payment = () => {
         <button
           type="button"
           onClick={generatePayment}
-          className="bg-cyan-600 rounded-md px-2 py-1 text-white"
+          className="bg-sky-500 rounded-md px-2 py-1 text-white hover:bg-sky-600"
         >
           Generate
         </button>
