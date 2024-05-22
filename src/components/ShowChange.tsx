@@ -1,19 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ChangeResultType } from "../types/ChangeResultType";
-import {
-  changeReturned,
-  selectChangeInTotal,
-} from "../store/slices/ChangeMachineSlice";
+import { selectChangeInTotal } from "../store/slices/ChangeMachineSlice";
 import SeparatingLine from "./SeparatingLine";
-import { useEffect } from "react";
 
 const ShowChange = ({ changeArray }: { changeArray: ChangeResultType[] }) => {
   const change = useSelector(selectChangeInTotal);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(changeReturned());
-  }, []);
 
   return (
     <div>

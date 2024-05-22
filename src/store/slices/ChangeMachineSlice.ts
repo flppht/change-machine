@@ -45,6 +45,7 @@ const changeMachineSlice = createSlice({
 
       state.returnedChange = resultChange;
       state.isInsufficient = isInsufficient;
+      state.isChangeReturned = true;
       state.returnedChange.forEach((coin) => {
         for (let i = 0; i < state.denominationsState.length; i++) {
           if (state.denominationsState[i].denomination === coin.denomination) {
@@ -52,9 +53,6 @@ const changeMachineSlice = createSlice({
           }
         }
       });
-    },
-    changeReturned(state) {
-      state.isChangeReturned = true;
     },
   },
   selectors: {
@@ -75,7 +73,6 @@ export const {
   setAmountToPay,
   incrementDenominationCount,
   returnChange,
-  changeReturned,
 } = changeMachineSlice.actions;
 export const changeMachineReducer = changeMachineSlice.reducer;
 export const {
