@@ -68,7 +68,7 @@ const ChangeMachine = () => {
       )}
 
       {change && change.length > 0 && <ShowChange changeArray={change} />}
-      {change.length === 0 && isChangeReturned && (
+      {isChangeReturned && !isInsufficient && (
         <p className="italic text-red-600">Nothing to return</p>
       )}
       {isInsufficient && failMessage}
