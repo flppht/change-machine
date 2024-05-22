@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectChangeMachine } from "../store/slices/ChangeMachineSlice";
 import SeparatingLine from "./SeparatingLine";
+import { CURRENCY } from "../globals";
 
 const MachineState = () => {
   const machineState = useSelector(selectChangeMachine);
@@ -18,7 +19,9 @@ const MachineState = () => {
             key={key}
             className="grid grid-cols-2 gap-2 justify-items-center"
           >
-            <div>{machine.denomination} BAM</div>
+            <div>
+              {machine.denomination} {CURRENCY}
+            </div>
             <div className="font-semibold">{machine.count}</div>
           </div>
           <SeparatingLine className={"self-center w-11/12"} />

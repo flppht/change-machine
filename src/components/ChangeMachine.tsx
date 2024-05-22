@@ -10,6 +10,7 @@ import {
   selectTotalAmount,
 } from "../store/slices/ChangeMachineSlice";
 import ShowChange from "./ShowChange";
+import { CURRENCY } from "../globals";
 
 const ChangeMachine = () => {
   const machineState = useSelector(selectChangeMachine);
@@ -37,7 +38,9 @@ const ChangeMachine = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <p className="font-semibold mb-2">Inserted amount: {totalAmount}</p>
+      <p className="font-semibold mb-2">
+        Inserted amount: {totalAmount} {CURRENCY}
+      </p>
       {!isEnoughAmount && (
         <>
           <p className="font-semibold mb-2">Insert coins:</p>
@@ -49,7 +52,7 @@ const ChangeMachine = () => {
                   onClick={() => addCoin(machine.denomination, key)}
                   className="bg-slate-300 rounded-md p-2 w-24 font-semibold hover:bg-slate-400"
                 >
-                  {machine.denomination} BAM
+                  {machine.denomination} {CURRENCY}
                 </button>
               </div>
             ))}
@@ -68,7 +71,7 @@ const ChangeMachine = () => {
       )}
 
       {change && change.length > 0 && <ShowChange changeArray={change} />}
-      {isChangeReturned && !isInsufficient && (
+      {change.length === 0 && isChangeReturned && !isInsufficient && (
         <p className="italic text-red-600">Nothing to return</p>
       )}
       {isInsufficient && failMessage}

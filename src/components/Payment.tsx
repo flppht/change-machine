@@ -6,13 +6,14 @@ import {
 import MachineState from "./MachineState";
 import SeparatingLine from "./SeparatingLine";
 import ChangeMachine from "./ChangeMachine";
+import { CURRENCY } from "../globals";
 
 const Payment = () => {
   const amountToPay = useSelector(selectAmountToPay);
   const dispatch = useDispatch();
 
   const generatePayment = () => {
-    let randomNum = Math.random() * 100; // generate random number [0-100]
+    let randomNum = Math.random() * 20; // generate random number [0-20]
     let roundedNum = Math.round(randomNum * 10) / 10; // rounded decimals in order to return exact num of denominations, 4.56 -> 4.6
 
     dispatch(setAmountToPay(roundedNum));
@@ -20,7 +21,9 @@ const Payment = () => {
 
   const showAmount = (
     <div>
-      <p className="text-l font-semibold mt-2">Amount to pay: {amountToPay}</p>
+      <p className="text-l font-semibold mt-2">
+        Amount to pay: {amountToPay} {CURRENCY}
+      </p>
     </div>
   );
 

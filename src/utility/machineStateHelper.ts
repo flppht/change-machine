@@ -3,6 +3,7 @@ import { ChangeResultType } from "../types/ChangeResultType";
 
 export const generateMachineInitialState = (): ChangeResultType[] => {
   return DENOMINATIONS.map(
-    (denomination) => ({ denomination, count: 0 } as ChangeResultType)
+    (denomination) =>
+      ({ denomination: denomination, count: 0 } as ChangeResultType)
   );
 };

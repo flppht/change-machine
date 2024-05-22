@@ -5,6 +5,7 @@ import {
   setChangeState,
 } from "../store/slices/ChangeMachineSlice";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import { CURRENCY } from "../globals";
 
 type Props = {
   onMachineInit: () => void;
@@ -54,7 +55,9 @@ const MachineInitForm = ({ onMachineInit }: Props) => {
                   {values.machineState.length > 0 &&
                     values.machineState.map((change, index) => (
                       <div key={index} className="flex flex-col my-1">
-                        <label>Amount of {change.denomination}BAM coins</label>
+                        <label>
+                          Amount of {change.denomination} {CURRENCY} coins
+                        </label>
                         <ErrorMessage
                           name={`machineState.${index}.count`}
                           component="span"
