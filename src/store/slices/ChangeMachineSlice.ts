@@ -46,6 +46,7 @@ const changeMachineSlice = createSlice({
       state.returnedChange = resultChange;
       state.isInsufficient = isInsufficient;
       state.isChangeReturned = true;
+      // decrementing machine state after change is returned
       state.returnedChange.forEach((coin) => {
         for (let i = 0; i < state.denominationsState.length; i++) {
           if (state.denominationsState[i].denomination === coin.denomination) {

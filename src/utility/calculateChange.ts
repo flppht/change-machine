@@ -40,7 +40,7 @@ export const calculateChange = (
     }
   }
 
-  // if there is no enough resources, return empty result
+  // if there is no enough resources, return whatever it has of change and set isInsufficient to true
   if (remainingAmount > 0) {
     return { resultChange, isInsufficient: true };
   }
