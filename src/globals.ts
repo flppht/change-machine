@@ -1,2 +1,2 @@
-export const DENOMINATIONS = [5, 2, 1, 0.5, 0.2, 0.1];
-export const CURRENCY = "BAM";
+export const DENOMINATIONS = JSON.parse(process.env.REACT_APP_DENOMINATIONS);
+export const CURRENCY = process.env.REACT_APP_CURRENCY;
