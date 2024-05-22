@@ -1,20 +1,21 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { changeStateOfChange } from "../store/slices/ChangeMachineSlice";
+import {
+  selectChangeMachine,
+  setChangeState,
+} from "../store/slices/ChangeMachineSlice";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 
-const MachineInitForm = ({ setShowMachineInit }) => {
+type Props = {
+  onMachineInit: () => void;
+};
+
+const MachineInitForm = ({ onMachineInit }: Props) => {
   const dispatch = useDispatch();
+  const machineInitialValues = useSelector(selectChangeMachine);
 
   const initialValues = {
-    machineState: [
-      { denomination: 5, count: null },
-      { denomination: 2, count: null },
-      { denomination: 1, count: null },
-      { denomination: 0.5, count: null },
-      { denomination: 0.2, count: null },
-      { denomination: 0.1, count: null },
-    ],
+    machineState: machineInitialValues,
   };
 
   const validationSchema = Yup.object().shape({
@@ -31,13 +32,12 @@ const MachineInitForm = ({ setShowMachineInit }) => {
   });
 
   const onSubmit = (data) => {
-    console.log(data.machineState);
-    dispatch(changeStateOfChange(data.machineState));
-    setShowMachineInit(false);
+    dispatch(setChangeState(data.machineState));
+    onMachineInit();
   };
 
   return (
-    <div className="machineContainer">
+    <div className="flex flex-col items-center">
       <div className="text-xl font-semibold self-center my-4">
         Set initial state of machine
       </div>
@@ -47,7 +47,7 @@ const MachineInitForm = ({ setShowMachineInit }) => {
         validationSchema={validationSchema}
       >
         {({ values }) => (
-          <Form className="formContainer w-96 flex-row">
+          <Form className="flex flex-col h-auto rounded-lg p-5 bg-zinc-100 w-96 shadow-md">
             <FieldArray name="machineState">
               {() => (
                 <>
@@ -58,11 +58,12 @@ const MachineInitForm = ({ setShowMachineInit }) => {
                         <ErrorMessage
                           name={`machineState.${index}.count`}
                           component="span"
+                          className="text-red-500 italic text-sm ml-1 pb-1"
                         />
                         <Field
                           name={`machineState.${index}.count`}
                           placeholder="Enter amount"
-                          className="rounded-md px-2 py-1"
+                          className="rounded-md px-2 py-1 bg-white"
                         />
                       </div>
                     ))}

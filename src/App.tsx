@@ -7,10 +7,10 @@ const App = () => {
   const [showMachineInit, setShowMachineInit] = useState(true);
 
   return (
-    <div className="App">
+    <div className="h-full flex flex-col items-center ">
       <p className="text-3xl font-bold mt-4">Change Machine Application</p>
       {showMachineInit && (
-        <MachineInitForm setShowMachineInit={setShowMachineInit} />
+        <MachineInitForm onMachineInit={() => setShowMachineInit(false)} />
       )}
       {!showMachineInit && <Payment />}
     </div>

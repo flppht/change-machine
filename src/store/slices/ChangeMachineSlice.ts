@@ -1,25 +1,90 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { generateMachineInitialState } from "../../utility/machineStateHelper";
+import { calculateChange } from "../../utility/calculateChange";
+import { ChangeResultType } from "../../types/ChangeResultType";
 
 const changeMachineSlice = createSlice({
   name: "changeMachine",
-  initialState: [
-    { denomination: 5, count: 0 },
-    { denomination: 2, count: 0 },
-    { denomination: 1, count: 0 },
-    { denomination: 0.5, count: 0 },
-    { denomination: 0.2, count: 0 },
-    { denomination: 0.1, count: 0 },
-  ],
+  initialState: {
+    denominationsState: generateMachineInitialState(),
+    amountToPay: 0,
+    totalAmount: 0,
+    returnedChange: [] as ChangeResultType[],
+    isInsufficient: null as boolean,
+    isChangeReturned: false,
+  },
   reducers: {
-    changeStateOfChange(state, action) {
-      for (let i = 0; i < state.length; i++) {
-        if (state[i].denomination === action.payload[i].denomination) {
-          state[i].count = action.payload[i].count;
+    setChangeState(state, action) {
+      for (let i = 0; i < state.denominationsState.length; i++) {
+        if (
+          state.denominationsState[i].denomination ===
+          action.payload[i].denomination
+        ) {
+          state.denominationsState[i].count = action.payload[i].count;
         }
       }
     },
+    setAmountToPay(state, action) {
+      state.amountToPay = action.payload;
+      state.totalAmount = 0;
+      state.isInsufficient = null;
+      state.returnedChange = [];
+      state.isChangeReturned = false;
+    },
+    incrementDenominationCount(state, action) {
+      state.denominationsState[action.payload.key].count++;
+      state.totalAmount +=
+        state.denominationsState[action.payload.key].denomination;
+      state.totalAmount = Math.round(state.totalAmount * 10) / 10;
+    },
+    returnChange(state) {
+      const { resultChange, isInsufficient } = calculateChange(
+        state.totalAmount - state.amountToPay,
+        state.denominationsState
+      );
+
+      state.returnedChange = resultChange;
+      state.isInsufficient = isInsufficient;
+      state.returnedChange.forEach((coin) => {
+        for (let i = 0; i < state.denominationsState.length; i++) {
+          if (state.denominationsState[i].denomination === coin.denomination) {
+            state.denominationsState[i].count -= coin.count;
+          }
+        }
+      });
+    },
+    changeReturned(state) {
+      state.isChangeReturned = true;
+    },
+  },
+  selectors: {
+    selectChangeMachine: (state) => state.denominationsState,
+    selectIsEnoughAmount: (state) => state.totalAmount >= state.amountToPay,
+    selectTotalAmount: (state) => state.totalAmount,
+    selectAmountToPay: (state) => state.amountToPay,
+    selectReturnedChange: (state) => state.returnedChange,
+    selectIsInsufficient: (state) => state.isInsufficient,
+    selectChangeInTotal: (state) =>
+      Math.round((state.totalAmount - state.amountToPay) * 10) / 10,
+    selectIsChangeReturned: (state) => state.isChangeReturned,
   },
 });
 
-export const { changeStateOfChange } = changeMachineSlice.actions;
+export const {
+  setChangeState,
+  setAmountToPay,
+  incrementDenominationCount,
+  returnChange,
+  changeReturned,
+} = changeMachineSlice.actions;
 export const changeMachineReducer = changeMachineSlice.reducer;
+export const {
+  selectChangeMachine,
+  selectIsEnoughAmount,
+  selectTotalAmount,
+  selectAmountToPay,
+  selectReturnedChange,
+  selectIsInsufficient,
+  selectChangeInTotal,
+  selectIsChangeReturned,
+} = changeMachineSlice.selectors;

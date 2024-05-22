@@ -1,8 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import {
-  changeMachineReducer,
-  changeStateOfChange,
-} from "./slices/ChangeMachineSlice";
+import { changeMachineReducer } from "./slices/ChangeMachineSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +7,5 @@ const store = configureStore({
   },
 });
 
-export { changeStateOfChange };
 export { store };
 export type RootState = ReturnType<typeof store.getState>;

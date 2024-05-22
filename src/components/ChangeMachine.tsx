@@ -1,36 +1,74 @@
-import { useEffect, useState } from "react";
-import { calculateChange } from "../utility/calculateChange";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  incrementDenominationCount,
+  returnChange,
+  selectChangeMachine,
+  selectIsChangeReturned,
+  selectIsEnoughAmount,
+  selectIsInsufficient,
+  selectReturnedChange,
+  selectTotalAmount,
+} from "../store/slices/ChangeMachineSlice";
 import ShowChange from "./ShowChange";
 
-export type ChangeResultType = { denomination: number; count: number };
+const ChangeMachine = () => {
+  const machineState = useSelector(selectChangeMachine);
+  const totalAmount = useSelector(selectTotalAmount);
+  const isEnoughAmount = useSelector(selectIsEnoughAmount);
+  const change = useSelector(selectReturnedChange);
+  const isInsufficient = useSelector(selectIsInsufficient);
+  const isChangeReturned = useSelector(selectIsChangeReturned);
 
-const ChangeMachine = ({ amount }: { amount: number }) => {
-  const [result, setResult] = useState<ChangeResultType[] | []>();
-  const machineState = useSelector((state: RootState) => state.changeMachine);
-
-  useEffect(() => {
-    const resultChange = calculateChange(amount, machineState);
-    setResult(resultChange);
-  }, [amount]);
-
-  const successMessage = (
-    <p className="rounded-md bg-green-500 text-white p-2">
-      Payment accepted. Here is your change:
-    </p>
-  );
+  const dispatch = useDispatch();
 
   const failMessage = (
-    <p className="rounded-md bg-red-500 text-white p-2">
-      Payment declined due to insufficient resources.
+    <p className="rounded-md bg-red-500 text-white py-1 px-2 mt-2 text-center">
+      Due to insufficient resources, change could not be return completely.
     </p>
   );
+
+  const addCoin = (denomination: number, key: number) => {
+    dispatch(incrementDenominationCount({ denomination, key }));
+  };
+
+  const onReturnChange = () => {
+    dispatch(returnChange());
+  };
 
   return (
     <div className="flex flex-col items-center">
-      {result && result.length > 0 ? successMessage : failMessage}
-      {result && result.length > 0 && <ShowChange changeArray={result} />}
+      <p className="font-semibold mb-2">Inserted amount: {totalAmount}</p>
+      {!isEnoughAmount && (
+        <>
+          <p className="font-semibold mb-2">Insert coins:</p>
+          <div className="grid grid-cols-3 gap-2">
+            {machineState.map((machine, key) => (
+              <div key={key}>
+                <button
+                  type="button"
+                  onClick={() => addCoin(machine.denomination, key)}
+                  className="bg-slate-300 rounded-md p-2 w-24 font-semibold hover:bg-slate-400"
+                >
+                  {machine.denomination} BAM
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      {isEnoughAmount && !isChangeReturned && (
+        <button
+          type="button"
+          onClick={onReturnChange}
+          className="bg-green-300 rounded-md p-2 w-36 font-medium hover:bg-green-400"
+        >
+          Return change
+        </button>
+      )}
+
+      {change && change.length > 0 && <ShowChange changeArray={change} />}
+      {isInsufficient && failMessage}
     </div>
   );
 };
